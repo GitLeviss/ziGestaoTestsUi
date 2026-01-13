@@ -52,56 +52,56 @@ A arquitetura adota uma abordagem em camadas com clara separação de responsabi
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        LAYER DE TESTES                              │
-│                      (tests/)                                        │
-│  - Define os cenários de teste                                       │
-│  - Aplica anotações de testes (NUnit, Allure)                        │
-│  - Orquestra a execução através de Builders                          │
+│                      (tests/)                                       │
+│  - Define os cenários de teste                                      │
+│  - Aplica anotações de testes (NUnit, Allure)                       │
+│  - Orquestra a execução através de Builders                         
 └─────────────────────────────────────────────────────────────────────┘
                                     ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      LAYER DE BUILDERS                               │
-│                     (builders/)                                      │
-│  - Implementa o padrão Builder para fluência                          │
-│  - Encadeia ações em sequência lógica                                │
-│  - Abstrai a complexidade de orquestração                            │
+│                      LAYER DE BUILDERS                              │
+│                     (builders/)                                     │
+│  - Implementa o padrão Builder para fluência                        │
+│  - Encadeia ações em sequência lógica                               │
+│  - Abstrai a complexidade de orquestração                           │
 └─────────────────────────────────────────────────────────────────────┘
                                     ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      LAYER DE PÁGINAS                                │
-│                       (pages/)                                       │
+│                      LAYER DE PÁGINAS                               │
+│                       (pages/)                                      │
 │  - Implementa o Page Object Model (POM)                             │
 │  - Representa páginas da aplicação                                  │
 │  - Encapsula interações com elementos                               │
 └─────────────────────────────────────────────────────────────────────┘
                                     ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      LAYER DE LOCATORS                               │
-│                    (locators/)                                       │
-│  - Centraliza seletores CSS e XPath                                  │
-│  - Facilita manutenção de seletores                                  │
+│                      LAYER DE LOCATORS                              │
+│                    (locators/)                                      │
+│  - Centraliza seletores CSS e XPath                                 │
+│  - Facilita manutenção de seletores                                 │
 └─────────────────────────────────────────────────────────────────────┘
                                     ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      LAYER DE DATA                                   │
-│                       (data/)                                        │
-│  - Fornece dados para os testes                                      │
-│  - Suporta dados de configuração                                     │
+│                      LAYER DE DATA                                  │
+│                       (data/)                                       │
+│  - Fornece dados para os testes                                     │
+│  - Suporta dados de configuração                                    │
 └─────────────────────────────────────────────────────────────────────┘
                                     ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      LAYER DE UTILS                                  │
-│                       (utils/)                                       │
-│  - Funções reutilizáveis                                             │
+│                      LAYER DE UTILS                                 │
+│                       (utils/)                                      │
+│  - Funções reutilizáveis                                            │
 │  - Helpers para interações comuns                                   │
-│  - Gerenciamento de vídeos e screenshots                             │
+│  - Gerenciamento de vídeos e screenshots                            │
 └─────────────────────────────────────────────────────────────────────┘
                                     ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      LAYER DE RUNNER                                 │
-│                      (runner/)                                       │
-│  - Configuração inicial do browser (TestBase)                        │
-│  - Gerenciamento de ciclo de vida dos testes                         │
-│  - Setup e Teardown                                                  │
+│                      LAYER DE RUNNER                                │
+│                      (runner/)                                      │
+│  - Configuração inicial do browser (TestBase)                       │
+│  - Gerenciamento de ciclo de vida dos testes                        │
+│  - Setup e Teardown                                                 │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -127,7 +127,7 @@ O fluxo de execução de um teste segue este padrão:
     │ 2. TESTBASE.OpenBrowserAsync()       │
     │    ├─ Inicia Playwright              │
     │    ├─ Lança browser Chromium         │
-    │    ├─ Configura contexto            │
+    │    ├─ Configura contexto             │
     │    │  ├─ Viewport (1920x1080)        │
     │    │  ├─ Gravação de vídeo           │
     │    │  └─ Zoom (75%)                  │
