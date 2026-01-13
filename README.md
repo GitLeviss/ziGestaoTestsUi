@@ -142,14 +142,14 @@ O fluxo de execução de um teste segue este padrão:
     │    ├─ Configura Data (opcional)       │
     │    └─ Executa Builder:               │
     │        ┌──────────────────────────┐  │
-    │        │ LoginBuilder             │  │
-    │        │  ├─ .DoLogin()           │  │
-    │        │  │  ├─ Write Email       │  │
-    │        │  │  ├─ Write Password    │  │
-    │        │  │  └─ Click Submit      │  │
-    │        │  └─ .ValidateUrl()       │  │
-    │        │     └─ Verify URL        │  │
-    │        │  └─ .Execute()           │  │
+        │        │ FeatureBuilder          │  │
+        │        │  ├─ .PerformAction()     │  │
+        │        │  │  ├─ Write Input       │  │
+        │        │  │  ├─ Fill Form         │  │
+        │        │  │  └─ Click Button      │  │
+        │        │  └─ .ValidateResult()    │  │
+        │        │     └─ Verify Outcome    │  │
+        │        │  └─ .Execute()           │  │
     │        └──────────────────────────┘  │
     └────────┬─────────────────────────────┘
              │
@@ -177,26 +177,26 @@ O fluxo de execução de um teste segue este padrão:
 ziGestaoTestsUi/
 │
 ├── pages/                    # Page Objects (POM)
-│   └── login/
-│       └── LoginPage.cs      # Representação da página de login
+│   └── [feature]/
+│       └── [FeaturePage].cs  # Representação da página da funcionalidade
 │
 ├── locators/                 # Seletores CSS/XPath
-│   ├── login/
-│   │   └── LoginElements.cs  # Seletores da página de login
+│   ├── [feature]/
+│   │   └── [FeatureElements].cs  # Seletores da funcionalidade
 │   └── GenericElements.cs    # Seletores genéricos reutilizáveis
 │
 ├── builders/                 # Padrão Builder para orquestração
-│   ├── login/
-│   │   └── LoginBuilder.cs   # Builder para fluxos de login
+│   ├── [feature]/
+│   │   └── [FeatureBuilder].cs  # Builder para fluxos da funcionalidade
 │   └── TestBuilder.cs        # Builder base abstrato
 │
 ├── tests/                    # Casos de teste
-│   └── login/
-│       └── LoginTests.cs     # Testes da funcionalidade de login
+│   └── [feature]/
+│       └── [FeatureTests].cs # Testes da funcionalidade
 │
 ├── data/                     # Dados de teste
-│   ├── login/
-│   │   └── LoginData.cs      # Dados para testes de login
+│   ├── [feature]/
+│   │   └── [FeatureData].cs  # Dados para testes da funcionalidade
 │   └── files/                # Arquivos utilizados nos testes
 │
 ├── utils/                    # Utilitários e Helpers
@@ -220,17 +220,19 @@ O projeto utiliza o arquivo `appsettings.Development.json` para configuração:
 ```json
 {
   "Credentials": {
-    "Email": "al@zitec.ai",
-    "Password": "Admin@123"
+    "Email": "your_email@example.com",
+    "Password": "your_password_here"
   },
   "Links": {
-    "Manager": "https://zigestao.zitec.ai/login"
+    "BaseUrl": "https://your-application-url.com"
   },
   "Paths": {
-    "Arquivo": "data/files/"
+    "TestData": "data/files/"
   }
 }
 ```
+
+> ⚠️ **Importante**: Nunca commit credenciais reais. Utilize variáveis de ambiente para ambientes de produção.
 
 ### Variáveis de Ambiente
 
@@ -238,10 +240,10 @@ Também é possível sobrescrever configurações via variáveis de ambiente:
 
 | Variável | Descrição |
 |----------|-----------|
-| `ZCUSTODIA_EMAIL` | Email de login |
-| `ZCUSTODIA_PASS` | Senha de login |
-| `ZIGESTORA_LINK` | URL da aplicação |
-| `ZCUSTODIA_PATHS` | Caminho para arquivos de teste |
+| `TEST_EMAIL` | Email de teste |
+| `TEST_PASSWORD` | Senha de teste |
+| `BASE_URL` | URL da aplicação |
+| `TEST_DATA_PATH` | Caminho para arquivos de teste |
 
 ---
 
@@ -274,8 +276,8 @@ dotnet test
 # Executar testes em paralelo
 dotnet test --parallel
 
-# Executar apenas testes de login
-dotnet test --filter "FullyQualifiedName~LoginTests"
+# Executar apenas testes de uma funcionalidade específica
+dotnet test --filter "FullyQualifiedName~FeatureTests"
 
 # Executar com output detalhado
 dotnet test --logger "console;verbosity=detailed"
@@ -288,14 +290,13 @@ dotnet test --logger "console;verbosity=detailed"
 ### 1. Page Object Model (POM)
 
 ```csharp
-// LoginPage.cs - Encapsula interações com a página de login
-public class LoginPage
+// FeaturePage.cs - Encapsula interações com a página da funcionalidade
+public class FeaturePage
 {
-    public async Task DoLogin()
+    public async Task PerformAction()
     {
-        await _utils.Write(_el.EmailField, _data.Email, "write email");
-        await _utils.Write(_el.PasswordField, _data.Password, "write password");
-        await _utils.Click(_el.SubmitButton, "click submit");
+        await _utils.Write(_el.InputField, _data.Value, "write value");
+        await _utils.Click(_el.ActionButton, "click action button");
     }
 }
 ```
@@ -303,10 +304,10 @@ public class LoginPage
 ### 2. Builder Pattern
 
 ```csharp
-// LoginTests.cs - Orquestração fluente de testes
-await new LoginBuilder(loginPage)
-    .DoLogin()
-    .ValidateUrl("https://zigestao.zitec.ai/inicio")
+// FeatureTests.cs - Orquestração fluente de testes
+await new FeatureBuilder(featurePage)
+    .PerformAction()
+    .ValidateResult()
     .Execute();
 ```
 
