@@ -1,0 +1,12 @@
+﻿bin/
+obj/
+
+
+allure-results/
+allure-report/
+
+
+
+.vs/
+
+appsettings.Development.json
