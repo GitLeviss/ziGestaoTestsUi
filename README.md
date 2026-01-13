@@ -138,28 +138,28 @@ O fluxo de execução de um teste segue este padrão:
              ▼
     ┌──────────────────────────────────────┐
     │ 3. TEST CASE EXECUTION               │
-    │    ├─ Instancia Page Object           │
-    │    ├─ Configura Data (opcional)       │
+    │    ├─ Instancia Page Object          │
+    │    ├─ Configura Data (opcional)      │
     │    └─ Executa Builder:               │
     │        ┌──────────────────────────┐  │
-        │        │ FeatureBuilder          │  │
-        │        │  ├─ .PerformAction()     │  │
-        │        │  │  ├─ Write Input       │  │
-        │        │  │  ├─ Fill Form         │  │
-        │        │  │  └─ Click Button      │  │
-        │        │  └─ .ValidateResult()    │  │
-        │        │     └─ Verify Outcome    │  │
-        │        │  └─ .Execute()           │  │
+    │        │ FeatureBuilder           │  │
+    │        │  ├─ .PerformAction()     │  │
+    │        │  │  ├─ Write Input       │  │
+    │        │  │  ├─ Fill Form         │  │
+    │        │  │  └─ Click Button      │  │
+    │        │  └─ .ValidateResult()    │  │
+    │        │     └─ Verify Outcome    │  │
+    │        │  └─ .Execute()           │  │
     │        └──────────────────────────┘  │
     └────────┬─────────────────────────────┘
              │
              ▼
     ┌──────────────────────────────────────┐
     │ 4. TESTBASE.CloseBrowserAsync()      │
-    │    ├─ Finaliza gravação de vídeo      │
+    │    ├─ Finaliza gravação de vídeo     │
     │    ├─ Anexa vídeo ao Allure          │
     │    ├─ Fecha contexto do browser      │
-    │    ├─ Fecha browser                   │
+    │    ├─ Fecha browser                  │
     │    └─ Dispose do Playwright          │
     └────────┬─────────────────────────────┘
              │
@@ -208,42 +208,9 @@ ziGestaoTestsUi/
 ├── runner/                   # Configuração base
 │   └── TestBase.cs          # Classe base para testes
 │
-└── appsettings.Development.json  # Configurações de ambiente
+
 ```
 
----
-
-## Configuração
-
-O projeto utiliza o arquivo `appsettings.Development.json` para configuração:
-
-```json
-{
-  "Credentials": {
-    "Email": "your_email@example.com",
-    "Password": "your_password_here"
-  },
-  "Links": {
-    "BaseUrl": "https://your-application-url.com"
-  },
-  "Paths": {
-    "TestData": "data/files/"
-  }
-}
-```
-
-> ⚠️ **Importante**: Nunca commit credenciais reais. Utilize variáveis de ambiente para ambientes de produção.
-
-### Variáveis de Ambiente
-
-Também é possível sobrescrever configurações via variáveis de ambiente:
-
-| Variável | Descrição |
-|----------|-----------|
-| `TEST_EMAIL` | Email de teste |
-| `TEST_PASSWORD` | Senha de teste |
-| `BASE_URL` | URL da aplicação |
-| `TEST_DATA_PATH` | Caminho para arquivos de teste |
 
 ---
 
